@@ -11,3 +11,4 @@
       Windows平台
 ###  4.实现功能 ###
     ++ 搭建“CAN信息Message描述数据库”和“CAN信号Signal描述数据库”
+    ++ 确定CAN信号在CAN信息中的排列方式
