@@ -18,3 +18,5 @@
 + 能够对接收到的多个CAN信息，通过CAN信息及CAN信号数据库进行解析，将CAN信息原始数据进行显示。并能对CAN信息中的CAN信号的物理值实时数据进行显示。
 + 搭建“CAN信息Message描述数据库”和“CAN信号Signal描述数据库”
 + 确定CAN信号在CAN信息中的排列方式
+###  5.功能模块图 ###  
+![cantool](https://github.com/li77/CanTool/blob/cj/CanToolApp.png?raw=true)
