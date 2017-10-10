@@ -50,7 +50,7 @@ END_MESSAGE_MAP()
 
 
 CMainDlg::CMainDlg(CWnd* pParent /*=NULL*/)
-	: CDialogEx(IDD_CANTOOLAPP_DIALOG, pParent)
+	: CDialogEx(IDD_MAIN_DLG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -64,6 +64,7 @@ BEGIN_MESSAGE_MAP(CMainDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_COM_MANA, &CMainDlg::OnBnClickedComMana)
 END_MESSAGE_MAP()
 
 
@@ -98,7 +99,7 @@ BOOL CMainDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
-	ShowWindow(SW_MINIMIZE);
+	//ShowWindow(SW_MINIMIZE);
 
 	// TODO: 在此添加额外的初始化代码
 
@@ -154,3 +155,9 @@ HCURSOR CMainDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CMainDlg::OnBnClickedComMana()
+{
+	// TODO: 在此添加控件通知处理程序代码
+}
