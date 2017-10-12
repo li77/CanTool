@@ -2,7 +2,6 @@
 #define CANTOOL_LINKLIST_H
 #include <iostream>
 #include <string>
-using namespace std;
 
 typedef unsigned int uint32;
 typedef unsigned char uchar;
@@ -23,11 +22,11 @@ class MessageLinkList
 public:
 	MessageLinkList();
 	~MessageLinkList();
-	void Insert(MessageNode*);
-	void Update(MessageNode*);
-	void Search(MessageNode*);
-	MessageNode* Delete(MessageNode*);
-	void Traversal(MessageNode*);
+	void Insert(MessageNode*);           //插入
+	void Update(uint32);                 //更新
+	void Search(uint32);                 //查找
+	MessageNode* Delete(MessageNode*);   //删除
+	void Traversal(MessageNode*);        //遍历
 
 private:
 	MessageNode* mHead;
