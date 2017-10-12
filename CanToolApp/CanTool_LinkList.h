@@ -25,7 +25,7 @@ public:
 	void Insert(MessageNode*);           //插入
 	void Update(uint32);                 //更新
 	void Search(uint32);                 //查找
-	MessageNode* Delete(MessageNode*);   //删除
+	void Delete(uint32);         //删除
 	void Traversal(MessageNode*);        //遍历
 
 private:
