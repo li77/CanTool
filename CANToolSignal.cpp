@@ -17,14 +17,9 @@ public:
 			id = getInt(s_id);
 			s_dlc = message[9];
 			dlc = getInt(s_dlc);
-			if(dlc == 4)
-			{
-				s_data = message.substr(10, 8);
-			}
-			else if (dlc == 8)
-			{
-				s_data = message.substr(10, 16);
-			}
+			
+			s_data = message.substr(10, dlc*2);
+
 			data = getInt(s_data);
 		}
 		else if (message[0] == 't') 
@@ -33,14 +28,9 @@ public:
 			id = getInt(s_id);
 			s_dlc = message[4];
 			dlc = getInt(s_dlc);
-			if (dlc == 4)
-			{
-				s_data = message.substr(5, 8);
-			}
-			else if (dlc == 8)
-			{
-				s_data = message.substr(5, 16);
-			}
+
+			s_data = message.substr(10, dlc * 2);
+
 			data = getInt(s_data);
 		}
 	}
