@@ -75,6 +75,13 @@ void MessageLinkList::Update(uint32 _id)
 	}
 }
 
+/*****************************************************
+
+函数名：Delete 删除函数
+功能：删除指定id的节点数据
+
+*****************************************************/
+
 void MessageLinkList::Delete(uint32 _id)
 {
 	MessageNode*p = mHead;
