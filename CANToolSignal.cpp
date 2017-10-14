@@ -3,6 +3,7 @@
 #include <stdlib.h>
 using namespace std;
 
+//思考了一下data信息的存储的问题，个人感觉存入二维数组比较容易实现。 是否还有更便捷的方法有点研究，打算等到得到更具体的方法后，继续实现。
 class CANMessage
 {  
 public:
