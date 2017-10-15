@@ -3,7 +3,6 @@
 #include <stdlib.h>
 using namespace std;
 
-//思考了一下data信息的存储的问题，个人感觉存入二维数组比较容易实现。 是否还有更便捷的方法有点研究，打算等到得到更具体的方法后，继续实现。
 class CANMessage
 {  
 public:
@@ -24,30 +23,11 @@ public:
 
 			s_data_bin = HexToBin(s_data);
 
-			int data_length = s_data_bin.size();
-			int byte = data_length / 8;
-			//将二进制data信息存入二维数组
-			char data_table[byte][8] = new char;
-			//intel格式
-			for (int i = byte - 1; i >= 0; i--)
-			{
-				int k = 0;
-				for(int j = 7; j >= 0; j--)
-				{
-					data_table[i][j] = s_data_bin[k];
-					k++;
-				}
-			}
-			//motorola格式
-			for (int i = 0; i < byte; i++)
-			{
-				int k = 0;
-				for (int j = 7; j >= 0; j--)
-				{
-					data_table[i][j] = s_data_bin[k];
-					k++;
-				}
-			}
+			int start;//起始位编号
+			int length;//DATA长度
+			string format;//0+：motorala格式 1+：intel格式
+
+			
 		}
 		else if (message[0] == 't') 
 		{
@@ -60,30 +40,9 @@ public:
 
 			s_data_bin = HexToBin(s_data);
 
-			int data_length = s_data_bin.size();
-			int byte = data_length / 8;
-			//将二进制data信息存入二维数组
-			char data_table[byte][8] = new char;
-			//intel格式
-			for (int i = byte - 1; i >= 0; i--)
-			{
-				int k = 0;
-				for (int j = 7; j >= 0; j--)
-				{
-					data_table[i][j] = s_data_bin[k];
-					k++;
-				}
-			}
-			//motorola格式
-			for (int i = 0; i < byte; i++)
-			{
-				int k = 0;
-				for (int j = 7; j >= 0; j--)
-				{
-					data_table[i][j] = s_data_bin[k];
-					k++;
-				}
-			}
+			int start;//起始位编号
+			int length;//DATA长度
+			string format;//0+：motorala格式 1+：intel格式
 		}
 	}
 
@@ -190,6 +149,57 @@ private:
 
 		return strBin;
 	}
+
+	//DATA信号解析
+	int signalAnalyze(int start, int length, string format, string s_data_bin)
+	{
+		char number[length] = new char;
+		//对应位置
+		int byte = start / 8;
+		int bit = start % 8;
+		//motorola格式
+		if(strcmp(format, "0+") == 0)
+		{
+			for(int i = 0; i < length; i++)
+			{				
+				//对应数据
+				number[i] = s_data_bin[byte * 8 + 7 - bit];
+				if(bit != 0)
+				{
+					bit = bit - 1;
+				}
+				else
+				{
+					byte = byte + 1;
+					bit = 7;
+				}
+			}
+		}
+		//intel格式
+		else if (strcmp(format, "1+") == 0)
+		{
+			for (int i = 0; i < length; i++)
+			{
+				//对应数据
+				number[i] = s_data_bin[(s_data_bin.size()/8 - byte) * 8 + 7 - bit];
+				if (bit != 7)
+				{
+					bit = bit + 1;
+				}
+				else
+				{
+					byte = byte + 1;
+					bit = 0;
+				}
+			}
+		}
+		else
+		{
+
+		}
+	}
+
+
 
 
 };
