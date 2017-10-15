@@ -7,7 +7,7 @@ using namespace std;
 class CANMessage
 {  
 public:
-	void analysis() 
+	void analyze() 
 	{
 		string s_id;
 		string s_dlc;
@@ -23,6 +23,31 @@ public:
 			s_data = message.substr(10, dlc*2);
 
 			s_data_bin = HexToBin(s_data);
+
+			int data_length = s_data_bin.size();
+			int byte = data_length / 8;
+			//将二进制data信息存入二维数组
+			char data_table[byte][8] = new char;
+			//intel格式
+			for (int i = byte - 1; i >= 0; i--)
+			{
+				int k = 0;
+				for(int j = 7; j >= 0; j--)
+				{
+					data_table[i][j] = s_data_bin[k];
+					k++;
+				}
+			}
+			//motorola格式
+			for (int i = 0; i < byte; i++)
+			{
+				int k = 0;
+				for (int j = 7; j >= 0; j--)
+				{
+					data_table[i][j] = s_data_bin[k];
+					k++;
+				}
+			}
 		}
 		else if (message[0] == 't') 
 		{
@@ -34,6 +59,31 @@ public:
 			s_data = message.substr(10, dlc * 2);
 
 			s_data_bin = HexToBin(s_data);
+
+			int data_length = s_data_bin.size();
+			int byte = data_length / 8;
+			//将二进制data信息存入二维数组
+			char data_table[byte][8] = new char;
+			//intel格式
+			for (int i = byte - 1; i >= 0; i--)
+			{
+				int k = 0;
+				for (int j = 7; j >= 0; j--)
+				{
+					data_table[i][j] = s_data_bin[k];
+					k++;
+				}
+			}
+			//motorola格式
+			for (int i = 0; i < byte; i++)
+			{
+				int k = 0;
+				for (int j = 7; j >= 0; j--)
+				{
+					data_table[i][j] = s_data_bin[k];
+					k++;
+				}
+			}
 		}
 	}
 
