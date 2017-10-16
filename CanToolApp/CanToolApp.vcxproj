@@ -186,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CanToolApp.h" />
+    <ClInclude Include="com_led.h" />
     <ClInclude Include="MainDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -193,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CanToolApp.cpp" />
+    <ClCompile Include="com_led.cpp" />
     <ClCompile Include="MainDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -215,7 +217,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties RESOURCE_FILE="CanToolApp.rc" />
+      <UserProperties _x007B_0A362353-2E5E-11D3-85BF-00105AC8B715_x007D_="CCom_led" RESOURCE_FILE="CanToolApp.rc" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

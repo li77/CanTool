@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "com_led.h"
 
 
 // CMainDlg ¶Ô»°¿ò
@@ -34,4 +35,6 @@ protected:
 public:
 	afx_msg void OnEnChangeEdit1();
 	afx_msg void OnBnClickedComMana();
+	CCom_led m_comLed;
+
 };
