@@ -186,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CanToolApp.h" />
+    <ClInclude Include="CanTool_LinkList.h" />
     <ClInclude Include="com_led.h" />
     <ClInclude Include="MainDlg.h" />
     <ClInclude Include="Resource.h" />
@@ -194,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CanToolApp.cpp" />
+    <ClCompile Include="CanTool_LinkList.cpp" />
     <ClCompile Include="com_led.cpp" />
     <ClCompile Include="MainDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
