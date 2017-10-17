@@ -67,21 +67,15 @@ PMessageNode MessageLinkList::Search(uint32 _id)
 
 /*****************************************************
 
-函数名：Update 更新函数
-功能：更新指定id的节点数据
+函数名：UpdateMessageNode 更新信息节点函数
+功能：更新指定信息节点数据
 
 *****************************************************/
 
-/*void MessageLinkList::Update(uint32 _id)
+void MessageLinkList::UpdateMessageNode(uint64_t _data, PMessageNode p)
 {
-	MessageNode*p = mHead->nextMessageNode;
-	while (p != NULL)
-	{
-		if (p->id == _id)
-			cin >> p->CANmessage >> p->MessageName >> p->Separater >> p->DLC >> p->NodeName;
-		p = p->nextMessageNode;
-	}
-}*/
+	p->data = _data;
+}
 
 /*****************************************************
 
