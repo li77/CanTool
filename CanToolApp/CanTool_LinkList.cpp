@@ -13,13 +13,13 @@ using namespace std;
 void MessageLinkList::Insert(MessageNode* l)
 {
 	MessageNode* p = mHead;
-	while (p->nextMessageNode == NULL)
+	while (p->nextMessageNode == NULL)          //遍历查看是否有相同id，有则删除
 	{
 		if (p->nextMessageNode->id == l->id)
 			p->nextMessageNode = p->nextMessageNode->nextMessageNode;
 		p = p->nextMessageNode;
 	}
-	l->nextMessageNode = p->nextMessageNode;
+	l->nextMessageNode = p->nextMessageNode;     //尾插新节点
 	p->nextMessageNode = l;
 }
 
@@ -46,13 +46,21 @@ void MessageLinkList::Traversal(MessageNode* l)
 功能：查找指定id的节点数据并输出
 
 *****************************************************/
-void MessageLinkList::Search(uint32 _id)
+PMessageNode MessageLinkList::Search(uint32 _id)
 {
 	MessageNode* p = mHead->nextMessageNode;
 	while (p != NULL)
 	{
 		if (p->id == _id)
+		{
 			cout << p->CANmessage << p->id << p->MessageName << p->Separater << p->DLC << p->NodeName;
+			return p;
+		}
+		else
+		{
+			cout << "错误！未找到此id！";
+			return nullptr;
+		}
 		p = p->nextMessageNode;
 	}
 }
@@ -64,7 +72,7 @@ void MessageLinkList::Search(uint32 _id)
 
 *****************************************************/
 
-void MessageLinkList::Update(uint32 _id)
+/*void MessageLinkList::Update(uint32 _id)
 {
 	MessageNode*p = mHead->nextMessageNode;
 	while (p != NULL)
@@ -73,7 +81,7 @@ void MessageLinkList::Update(uint32 _id)
 			cin >> p->CANmessage >> p->MessageName >> p->Separater >> p->DLC >> p->NodeName;
 		p = p->nextMessageNode;
 	}
-}
+}*/
 
 /*****************************************************
 
