@@ -39,6 +39,9 @@
     <ClInclude Include="CanTool_LinkList.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CANToolMessage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CanToolApp.cpp">
@@ -54,6 +57,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CanTool_LinkList.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CANToolMessage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -186,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CanToolApp.h" />
+    <ClInclude Include="CANToolMessage.h" />
     <ClInclude Include="CanTool_LinkList.h" />
     <ClInclude Include="com_led.h" />
     <ClInclude Include="MainDlg.h" />
@@ -195,6 +196,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CanToolApp.cpp" />
+    <ClCompile Include="CANToolMessage.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="CanTool_LinkList.cpp" />
     <ClCompile Include="com_led.cpp" />
     <ClCompile Include="MainDlg.cpp" />
