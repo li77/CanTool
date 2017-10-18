@@ -6,7 +6,7 @@
 #include <vector>
 using namespace std;
 
-struct CANSignal
+/*struct CANSignal
 {
 	string signalName;
 	string start;
@@ -16,12 +16,12 @@ struct CANSignal
 	string scope;
 	string unit;
 	string nodeName;
-};
+};*/
 
 class CANToolMessage
 {
 public:
-	unordered_map<int, vector<CANSignal>> canmsg;
+	//unordered_map<int, vector<CANSignal>> canmsg;
 	CANToolMessage();
 	~CANToolMessage();
 	void analyze();//ÐÅºÅ½âÎö

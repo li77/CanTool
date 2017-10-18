@@ -118,7 +118,7 @@ void CANToolMessage::loadDB(string filename)
 	{
 		//cout << "file is open" << endl;
 		string s;
-		vector<CANSignal> signals;
+		//vector<CANSignal> signals;
 		int id;
 		while (getline(file, s))
 		{
@@ -138,7 +138,7 @@ void CANToolMessage::loadDB(string filename)
 				regex reg("\\s+(\\w+)\\s+(\\w+)\\s+:\\s+(\\d+)\\|(\\d+)@([1|0][+|-])\\s+(\\S+)\\s+(\\S+)\\s+(.*)\\s+(.*)");
 				smatch m;
 				regex_match(s, m, reg);
-				struct CANSignal signal;
+				/*struct CANSignal signal;
 				signal.signalName = m[2];
 				signal.start = m[3];
 				signal.length = m[4];
@@ -147,11 +147,11 @@ void CANToolMessage::loadDB(string filename)
 				signal.scope = m[7];
 				signal.unit = m[8];
 				signal.nodeName = m[9];
-				signals.push_back(signal);
+				signals.push_back(signal);*/
 				//cout << signal_name << " " << start << " " << length << " " << format << " " << offset << " " << scope << " " << unit << " " << node_name << endl;
 			}
 		}
-		canmsg.insert(make_pair(id, signals));
+		//canmsg.insert(make_pair(id, signals));
 	}
 	else
 	{
