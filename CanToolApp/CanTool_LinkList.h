@@ -46,13 +46,14 @@ class MessageLinkList
 public:
 	MessageLinkList();
 	~MessageLinkList();
-	void Insert(MessageNode*);           //插入
-	void UpdateMessageNode(uint64_t,PMessageNode);            //更新信息
-	void UpdateSignalNode();             //更新信号
-	PMessageNode Search(uint32);         //查找
-	void Delete(uint32);                 //删除
-	void Traversal(MessageNode*);        //遍历
-
+	void InsertMessageNode(uint32,uchar,uint64_t);                                                           //插入
+	void InsertSignalNode();
+	void UpdateMessageNode(uint64_t, PMessageNode);                                      //更新信息
+	void UpdateSignalNode(char _signalName[32], float, PMessageNode);             //更新信号
+	PMessageNode Search(uint32);                                                         //查找
+	void Delete(uint32);                                                                 //删除
+	void Traversal(MessageNode*);                                                        //遍历
+private:
 	PMessageNode mHead;
 	PMessageNode mUpdate;                //指向最近一次更新的节点
 };

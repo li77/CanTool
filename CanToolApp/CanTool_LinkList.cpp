@@ -5,12 +5,12 @@ using namespace std;
 
 /*****************************************************
 
-函数名：Insert 插入函数
-功能：若为新数据则尾插入链表，否则删除原数据尾插新数据
+函数名：InsertMessageNode 信息节点插入函数
+功能：尾插法插入信息节点
 
 *****************************************************/
 
-void MessageLinkList::Insert(MessageNode* l)
+void MessageLinkList::InsertMessageNode(uint32 _id, uchar _dlc, uint64_t _data)
 {
 	MessageNode* p = mHead;
 	while (p->nextMessageNode == NULL)          //遍历查看是否有相同id，有则删除
@@ -72,9 +72,41 @@ PMessageNode MessageLinkList::Search(uint32 _id)
 
 *****************************************************/
 
-void MessageLinkList::UpdateMessageNode(uint64_t _data, PMessageNode p)
+void MessageLinkList::UpdateMessageNode(uint64_t _data, PMessageNode pm)
 {
-	p->data = _data;
+	if (pm == nullptr)
+		cout << "Error！" << endl;
+	else
+	{
+		pm->data = _data;
+		cout << "更新完成！" << endl;
+	}
+}
+
+/*****************************************************
+
+函数名：UpdateSignalNode 更新信号节点函数
+功能：更新指定信号节点数据
+
+*****************************************************/
+
+void MessageLinkList::UpdateSignalNode(char _signalName[32], float _value, PMessageNode pm)
+{
+	if (pm == nullptr)
+		cout << "Error!" << endl;
+	else
+	{
+		PSignalNode ps = pm->pSignalNode;
+		while (ps != nullptr)
+		{
+			if (strcmp(ps->SignalName, _signalName) == 0)
+			{
+				ps->value = _value;
+				cout << "更新完成！" << endl;
+			}
+			ps = ps->nextSignalNode;
+		}
+	}
 }
 
 /*****************************************************
