@@ -44,7 +44,7 @@ private:
 	//16进制字符串转2进制
 	string HexToBin(const string);
 	char* signalAnalyze(int, int, string, string);
-	int signalSynthesis(int _id, string _signalName, int _value);
+	void signalSynthesis(int, int, string, char*);
 };
 
 #endif

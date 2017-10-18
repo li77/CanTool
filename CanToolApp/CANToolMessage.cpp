@@ -94,7 +94,14 @@ void CANToolMessage::analyze()
 
 void CANToolMessage::synthesis(string _str)
 {
-
+	//解析字符串获得id，signalName和value；
+	int id = 0;
+	string signalName;
+	int value = 0;
+	//调用search(id)找到MessageNode，通过signalName找到相应的Signal，得到start，length和format
+	int start;
+	int length;
+	string format;
 }
 
 void CANToolMessage::setMessage(string message)
@@ -260,7 +267,7 @@ char * CANToolMessage::signalAnalyze(int start, int length, string format, strin
 				byte = byte + 1;
 				bit = 7;
 			}
-			cout << bit << " " << byte << endl;
+			//cout << bit << " " << byte << endl;
 		}
 	}
 	//intel格式
@@ -279,7 +286,7 @@ char * CANToolMessage::signalAnalyze(int start, int length, string format, strin
 				byte = byte + 1;
 				bit = 0;
 			}
-			cout << bit << " " << byte << endl;
+			//cout << bit << " " << byte << endl;
 		}
 	}
 	else
@@ -290,9 +297,51 @@ char * CANToolMessage::signalAnalyze(int start, int length, string format, strin
 	return number;
 }
 
-int CANToolMessage::signalSynthesis(int _id, string _signalName, int _value)
-{
-	int value = 0;
+//通过start，length,format以及二进制的value得到对应的m_data_bin
+void CANToolMessage::signalSynthesis(int start, int length, string format, char* value)
+{	
+	int byte = start / 8;
+	int bit = start % 8;
+	//motorola格式
+	if (format.compare("0+") == 0)
+	{
+		for (int i = 0; i < length; i++)
+		{
+			//对应数据
+			m_data_bin[byte * 8 + 7 - bit] = value[i];
+			if (bit != 0)
+			{
+				bit = bit - 1;
+			}
+			else
+			{
+				byte = byte + 1;
+				bit = 7;
+			}
+			//cout << bit << " " << byte << endl;
+		}
+	}
+	//intel格式
+	else if (format.compare("1+") == 0)
+	{
+		for (int i = 0; i < length; i++)
+		{
+			//对应数据
+			m_data_bin[(data_bin.size() / 8 - byte) * 8 + 7 - bit] = value[i];
+			if (bit != 7)
+			{
+				bit = bit + 1;
+			}
+			else
+			{
+				byte = byte + 1;
+				bit = 0;
+			}
+			//cout << bit << " " << byte << endl;
+		}
+	}
+	else
+	{
 
-	return value;
+	}
 }
