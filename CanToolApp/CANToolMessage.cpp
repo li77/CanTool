@@ -36,7 +36,7 @@ void CANToolMessage::analyze()
 		s_data = m_message.substr(10, m_dlc * 2);
 
 		m_data_bin = HexToBin(s_data);
-		if (canmsg.find(m_id) != canmsg.end())
+		/*if (canmsg.find(m_id) != canmsg.end())
 		{
 			for (int i = 0; i <= canmsg[m_id].size(); i++)
 			{
@@ -48,11 +48,19 @@ void CANToolMessage::analyze()
 				ss << canmsg[m_id][i].length;
 				ss >> length;
 				string format = canmsg[m_id][i].format;//0+：motorala格式 1+：intel格式
-				cout << signalAnalyze(start, length, format, m_data_bin) << endl;
+				//cout << signalAnalyze(start, length, format, m_data_bin) << endl;
 			}
-		}
-
-
+		}*/
+		//调用search(m_id)获取指针；
+		//不存在id则调用insertMessage(id,dlc,data)存储Message节点；
+		//存在则调用updateMessage()存储data；
+		//得到signal起始位，长度和格式；
+		int start;
+		int length;
+		string format;//0+：motorala格式 1+：intel格式
+		//解析
+		char * value = signalAnalyze(int start, int length, string format, string m_data_bin);
+		//调用updateSignal()存储value；
 
 	}
 	else if (m_message[0] == 't')
@@ -66,7 +74,7 @@ void CANToolMessage::analyze()
 
 		m_data_bin = HexToBin(s_data);
 
-		if (canmsg.find(m_id) != canmsg.end())
+		/*if (canmsg.find(m_id) != canmsg.end())
 		{
 			for (int i = 0; i <= canmsg[m_id].size(); i++)
 			{
@@ -78,10 +86,15 @@ void CANToolMessage::analyze()
 				ss << canmsg[m_id][i].length;
 				ss >> length;
 				string format = canmsg[m_id][i].format;//0+：motorala格式 1+：intel格式
-				cout << signalAnalyze(start, length, format, m_data_bin) << endl;
+				//cout << signalAnalyze(start, length, format, m_data_bin) << endl;
 			}
-		}
+		}*/
 	}
+}
+
+void CANToolMessage::synthesis(string _str)
+{
+
 }
 
 void CANToolMessage::setMessage(string message)
@@ -120,6 +133,7 @@ void CANToolMessage::loadDB(string filename)
 		string s;
 		//vector<CANSignal> signals;
 		int id;
+		int dlc;
 		while (getline(file, s))
 		{
 			if (s.substr(0, 3).compare("BO_") == 0)
@@ -131,6 +145,9 @@ void CANToolMessage::loadDB(string filename)
 				stringstream ss;
 				ss << m[2];
 				ss >> id;
+				ss << m[4];
+				ss >> dlc;
+				//调用insertMessage(id,dlc,null);
 				//cout << id << endl;
 			}
 			else if (s.substr(0, 4).compare(" SG_") == 0)
@@ -138,6 +155,15 @@ void CANToolMessage::loadDB(string filename)
 				regex reg("\\s+(\\w+)\\s+(\\w+)\\s+:\\s+(\\d+)\\|(\\d+)@([1|0][+|-])\\s+(\\S+)\\s+(\\S+)\\s+(.*)\\s+(.*)");
 				smatch m;
 				regex_match(s, m, reg);
+				string signalName = m[2];
+				string start = m[3];
+				string length = m[4];
+				string format = m[5];
+				string offset = m[6];
+				string scope = m[7];
+				string unit = m[8];
+				string nodeName = m[9];
+				//调用insertSignal();
 				/*struct CANSignal signal;
 				signal.signalName = m[2];
 				signal.start = m[3];
@@ -262,4 +288,11 @@ char * CANToolMessage::signalAnalyze(int start, int length, string format, strin
 	}
 	//_itoa(num, number,);
 	return number;
+}
+
+int CANToolMessage::signalSynthesis(int _id, string _signalName, int _value)
+{
+	int value = 0;
+
+	return value;
 }

@@ -25,6 +25,7 @@ public:
 	CANToolMessage();
 	~CANToolMessage();
 	void analyze();//信号解析
+	void synthesis(string);//信号合成
 	void setMessage(string);//传入Message字符串
 	string getMessage();
 	int getId();
@@ -43,6 +44,7 @@ private:
 	//16进制字符串转2进制
 	string HexToBin(const string);
 	char* signalAnalyze(int, int, string, string);
+	int signalSynthesis(int _id, string _signalName, int _value);
 };
 
 #endif
