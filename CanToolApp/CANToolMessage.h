@@ -6,7 +6,7 @@
 #include <vector>
 using namespace std;
 
-struct CANSignal
+/*struct CANSignal
 {
 	string signalName;
 	string start;
@@ -16,15 +16,16 @@ struct CANSignal
 	string scope;
 	string unit;
 	string nodeName;
-};
+};*/
 
 class CANToolMessage
 {
 public:
-	unordered_map<int, vector<CANSignal>> canmsg;
+	//unordered_map<int, vector<CANSignal>> canmsg;
 	CANToolMessage();
 	~CANToolMessage();
 	void analyze();//信号解析
+	void synthesis(string);//信号合成
 	void setMessage(string);//传入Message字符串
 	string getMessage();
 	int getId();
@@ -43,6 +44,7 @@ private:
 	//16进制字符串转2进制
 	string HexToBin(const string);
 	char* signalAnalyze(int, int, string, string);
+	void signalSynthesis(int, int, string, char*);
 };
 
 #endif

@@ -36,7 +36,7 @@ void CANToolMessage::analyze()
 		s_data = m_message.substr(10, m_dlc * 2);
 
 		m_data_bin = HexToBin(s_data);
-		if (canmsg.find(m_id) != canmsg.end())
+		/*if (canmsg.find(m_id) != canmsg.end())
 		{
 			for (int i = 0; i <= canmsg[m_id].size(); i++)
 			{
@@ -48,11 +48,19 @@ void CANToolMessage::analyze()
 				ss << canmsg[m_id][i].length;
 				ss >> length;
 				string format = canmsg[m_id][i].format;//0+：motorala格式 1+：intel格式
-				cout << signalAnalyze(start, length, format, m_data_bin) << endl;
+				//cout << signalAnalyze(start, length, format, m_data_bin) << endl;
 			}
-		}
-
-
+		}*/
+		//调用search(m_id)获取指针；
+		//不存在id则调用insertMessage(id,dlc,data)存储Message节点；
+		//存在则调用updateMessage()存储data；
+		//得到signal起始位，长度和格式；
+		int start;
+		int length;
+		string format;//0+：motorala格式 1+：intel格式
+		//解析
+		char * value = signalAnalyze(int start, int length, string format, string m_data_bin);
+		//调用updateSignal()存储value；
 
 	}
 	else if (m_message[0] == 't')
@@ -66,7 +74,7 @@ void CANToolMessage::analyze()
 
 		m_data_bin = HexToBin(s_data);
 
-		if (canmsg.find(m_id) != canmsg.end())
+		/*if (canmsg.find(m_id) != canmsg.end())
 		{
 			for (int i = 0; i <= canmsg[m_id].size(); i++)
 			{
@@ -78,10 +86,22 @@ void CANToolMessage::analyze()
 				ss << canmsg[m_id][i].length;
 				ss >> length;
 				string format = canmsg[m_id][i].format;//0+：motorala格式 1+：intel格式
-				cout << signalAnalyze(start, length, format, m_data_bin) << endl;
+				//cout << signalAnalyze(start, length, format, m_data_bin) << endl;
 			}
-		}
+		}*/
 	}
+}
+
+void CANToolMessage::synthesis(string _str)
+{
+	//解析字符串获得id，signalName和value；
+	int id = 0;
+	string signalName;
+	int value = 0;
+	//调用search(id)找到MessageNode，通过signalName找到相应的Signal，得到start，length和format
+	int start;
+	int length;
+	string format;
 }
 
 void CANToolMessage::setMessage(string message)
@@ -118,8 +138,9 @@ void CANToolMessage::loadDB(string filename)
 	{
 		//cout << "file is open" << endl;
 		string s;
-		vector<CANSignal> signals;
+		//vector<CANSignal> signals;
 		int id;
+		int dlc;
 		while (getline(file, s))
 		{
 			if (s.substr(0, 3).compare("BO_") == 0)
@@ -131,6 +152,9 @@ void CANToolMessage::loadDB(string filename)
 				stringstream ss;
 				ss << m[2];
 				ss >> id;
+				ss << m[4];
+				ss >> dlc;
+				//调用insertMessage(id,dlc,null);
 				//cout << id << endl;
 			}
 			else if (s.substr(0, 4).compare(" SG_") == 0)
@@ -138,7 +162,16 @@ void CANToolMessage::loadDB(string filename)
 				regex reg("\\s+(\\w+)\\s+(\\w+)\\s+:\\s+(\\d+)\\|(\\d+)@([1|0][+|-])\\s+(\\S+)\\s+(\\S+)\\s+(.*)\\s+(.*)");
 				smatch m;
 				regex_match(s, m, reg);
-				struct CANSignal signal;
+				string signalName = m[2];
+				string start = m[3];
+				string length = m[4];
+				string format = m[5];
+				string offset = m[6];
+				string scope = m[7];
+				string unit = m[8];
+				string nodeName = m[9];
+				//调用insertSignal();
+				/*struct CANSignal signal;
 				signal.signalName = m[2];
 				signal.start = m[3];
 				signal.length = m[4];
@@ -147,11 +180,11 @@ void CANToolMessage::loadDB(string filename)
 				signal.scope = m[7];
 				signal.unit = m[8];
 				signal.nodeName = m[9];
-				signals.push_back(signal);
+				signals.push_back(signal);*/
 				//cout << signal_name << " " << start << " " << length << " " << format << " " << offset << " " << scope << " " << unit << " " << node_name << endl;
 			}
 		}
-		canmsg.insert(make_pair(id, signals));
+		//canmsg.insert(make_pair(id, signals));
 	}
 	else
 	{
@@ -234,7 +267,7 @@ char * CANToolMessage::signalAnalyze(int start, int length, string format, strin
 				byte = byte + 1;
 				bit = 7;
 			}
-			cout << bit << " " << byte << endl;
+			//cout << bit << " " << byte << endl;
 		}
 	}
 	//intel格式
@@ -253,7 +286,7 @@ char * CANToolMessage::signalAnalyze(int start, int length, string format, strin
 				byte = byte + 1;
 				bit = 0;
 			}
-			cout << bit << " " << byte << endl;
+			//cout << bit << " " << byte << endl;
 		}
 	}
 	else
@@ -262,4 +295,53 @@ char * CANToolMessage::signalAnalyze(int start, int length, string format, strin
 	}
 	//_itoa(num, number,);
 	return number;
+}
+
+//通过start，length,format以及二进制的value得到对应的m_data_bin
+void CANToolMessage::signalSynthesis(int start, int length, string format, char* value)
+{	
+	int byte = start / 8;
+	int bit = start % 8;
+	//motorola格式
+	if (format.compare("0+") == 0)
+	{
+		for (int i = 0; i < length; i++)
+		{
+			//对应数据
+			m_data_bin[byte * 8 + 7 - bit] = value[i];
+			if (bit != 0)
+			{
+				bit = bit - 1;
+			}
+			else
+			{
+				byte = byte + 1;
+				bit = 7;
+			}
+			//cout << bit << " " << byte << endl;
+		}
+	}
+	//intel格式
+	else if (format.compare("1+") == 0)
+	{
+		for (int i = 0; i < length; i++)
+		{
+			//对应数据
+			m_data_bin[(data_bin.size() / 8 - byte) * 8 + 7 - bit] = value[i];
+			if (bit != 7)
+			{
+				bit = bit + 1;
+			}
+			else
+			{
+				byte = byte + 1;
+				bit = 0;
+			}
+			//cout << bit << " " << byte << endl;
+		}
+	}
+	else
+	{
+
+	}
 }
