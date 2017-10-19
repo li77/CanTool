@@ -56,13 +56,13 @@ void MessageLinkList::InitialMessageNode(PMessageNode pm, uint32 _id, uchar _dlc
 
 void MessageLinkList::InitialSignalNode(PSignalNode ps, char _signalName[32], float _phy_A, float _phy_B, float _maxValue, float _minValue, char _units[32], char _nodeName[255], char _startBit, char _endBit, char _endian)
 {
-	strcpy(ps->SignalName, _signalName);
+	strcpy_s(ps->SignalName, _signalName);
 	ps->phy_A = _phy_A;
 	ps->phy_B = _phy_A;
 	ps->maxValue = _maxValue;
 	ps->minValue = _minValue;
-	strcpy(ps->units, _units);
-	strcpy(ps->NodeName, _nodeName);
+	strcpy_s(ps->units, _units);
+	strcpy_s(ps->NodeName, _nodeName);
 	ps->startBit = _startBit;
 	ps->endBit = _endBit;
 	ps->Endian = _endian;
@@ -116,7 +116,7 @@ void MessageLinkList::InsertMessageNode(PMessageNode pm)
 {
 	if (pm != nullptr)
 	{
-		PMessageNode head = Get_mHead();
+		PMessageNode head = mHead;
 		PMessageNode p = head;
 		if (head == NULL)
 			head->nextMessageNode = pm;
@@ -142,7 +142,7 @@ void MessageLinkList::InsertMessageNode(PMessageNode pm)
 
 void MessageLinkList::Traversal()
 {
-	PMessageNode head = Get_mHead();
+	PMessageNode head = mHead;
 	PMessageNode p = head->nextMessageNode;
 	while (p != NULL)                                             //遍历Message节点
 	{
@@ -173,13 +173,10 @@ PMessageNode MessageLinkList::Search(uint32 _id)
 			cout << p->CANmessage << p->id << p->MessageName << p->Separater << p->DLC << p->NodeName;
 			return p;
 		}
-		else
-		{
-			cout << "错误！未找到此id！";
-			return nullptr;
-		}
 		p = p->nextMessageNode;
 	}
+	cout << "错误！未找到此id！";
+	return nullptr;
 }
 
 /*****************************************************
@@ -236,7 +233,7 @@ void MessageLinkList::UpdateSignalNode(char _signalName[32], float _value, PMess
 
 void MessageLinkList::DeleteAll()
 {
-	PMessageNode pm = Get_mHead();
+	PMessageNode pm = mHead;
 	pm = pm->nextMessageNode;
 	while (pm != NULL)
 	{

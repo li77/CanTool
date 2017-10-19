@@ -6,7 +6,6 @@
 typedef unsigned int uint32;
 typedef unsigned char uchar;
 
-MessageLinkList  mList;
 char isHaveDB;
 
 typedef struct SignalNode
@@ -64,7 +63,7 @@ private:
 	PMessageNode mHead;
 	PMessageNode mUpdate;                                                                //指向最近一次更新的节点
 	void DeleteSignalNode(PMessageNode);                                                 //删除信号节点
-};
+}mList;
 
 MessageLinkList::MessageLinkList()
 {
