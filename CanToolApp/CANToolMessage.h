@@ -8,14 +8,14 @@ using namespace std;
 
 /*struct CANSignal
 {
-	string signalName;
-	string start;
-	string length;
-	string format;
-	string offset;
-	string scope;
-	string unit;
-	string nodeName;
+string signalName;
+string start;
+string length;
+string format;
+string offset;
+string scope;
+string unit;
+string nodeName;
 };*/
 
 class CANToolMessage
@@ -24,8 +24,8 @@ public:
 	//unordered_map<int, vector<CANSignal>> canmsg;
 	CANToolMessage();
 	~CANToolMessage();
-	void analyze();//信号解析
-	void synthesis(string);//信号合成
+	void analyze(string);//信号解析
+	string synthesis(string);//信号合成
 	void setMessage(string);//传入Message字符串
 	string getMessage();
 	int getId();
