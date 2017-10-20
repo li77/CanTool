@@ -3,83 +3,48 @@
 #include "CanTool_LinkList.h"
 using namespace std;
 
+MessageLinkList::MessageLinkList()
+{
+	mHead = new MessageNode;
+	mUpdate = NULL;
+	pm = NULL;
+	ps = NULL;
+}
+
+MessageLinkList::~MessageLinkList()
+{
+	DeleteAll();
+}
+
 /*****************************************************
 
-函数名：CreatMessageNode 创建信息节点函数
-功能：创建一个新的信息节点
+函数名：InsertMessageNode 信息节点插入函数
+功能：尾插法插入信息节点
 
 *****************************************************/
 
-PMessageNode MessageLinkList::CreatMessageNode()
+void MessageLinkList::InsertMessageNode(uint32 _id, uchar _dlc, uint64_t _data)
 {
-	PMessageNode pm;
 	pm = new MessageNode;
-	return pm;
-}
-
-/*****************************************************
-
-函数名：CreatSignalNode 创建信号节点函数
-功能：创建一个新的信号节点
-
-*****************************************************/
-
-PSignalNode MessageLinkList::CreatSignalNode()
-{
-	PSignalNode ps;
-	ps = new SignalNode;
-	return ps;
-}
-
-/*****************************************************
-
-函数名：InitialMessageNode 初始化信息节点函数
-功能：初始化信息节点
-
-*****************************************************/
-
-void MessageLinkList::InitialMessageNode(PMessageNode pm, uint32 _id, uchar _dlc, uint64_t _data)
-{
 	pm->id = _id;
 	pm->DLC = _dlc;
 	pm->data = _data;
 	pm->nextMessageNode = nullptr;
 	pm->pSignalNode = nullptr;
-}
-
-/*****************************************************
-
-函数名：InitialSignalNode 初始化信号节点函数
-功能：初始化信号节点
-
-*****************************************************/
-
-void MessageLinkList::InitialSignalNode(PSignalNode ps, char _signalName[32], float _phy_A, float _phy_B, float _maxValue, float _minValue, char _units[32], char _nodeName[255], char _startBit, char _bitNum, char _endian)
-{
-	strcpy_s(ps->SignalName, _signalName);
-	ps->phy_A = _phy_A;
-	ps->phy_B = _phy_A;
-	ps->maxValue = _maxValue;
-	ps->minValue = _minValue;
-	strcpy_s(ps->units, _units);
-	strcpy_s(ps->NodeName, _nodeName);
-	ps->startBit = _startBit;
-	ps->bitNum = _bitNum;
-	ps->Endian = _endian;
-	ps->nextSignalNode = nullptr;
-}
-
-/*****************************************************
-
-函数名：LinkMessage_Signal 信息节点连接信号节点函数
-功能：将信息节点与信号节点连接起来
-
-*****************************************************/
-
-void MessageLinkList::LinkMessage_Signal(PMessageNode pm, PSignalNode ps)
-{
-	if (pm != nullptr && ps != nullptr)
-		pm->pSignalNode = ps;
+	if (pm != nullptr)
+	{
+		if (mHead->nextMessageNode == NULL)
+			mHead->nextMessageNode = pm;
+		else
+		{
+			PMessageNode p = mHead;
+			while (p->nextMessageNode != NULL)
+				p = p->nextMessageNode;
+			pm->nextMessageNode = p->nextMessageNode;     //尾插新节点
+			p->nextMessageNode = pm;
+		}
+		mUpdate = pm;               //最新的节点
+	}
 	else
 		return;
 }
@@ -91,43 +56,32 @@ void MessageLinkList::LinkMessage_Signal(PMessageNode pm, PSignalNode ps)
 
 *****************************************************/
 
-void MessageLinkList::InsertSignalNode(PMessageNode pm, PSignalNode ps)
+void MessageLinkList::InsertSignalNode(char _signalName[32], float _phy_A, float _phy_B, float _maxValue, float _minValue, char _units[32], char _nodeName[255], uint64_t _startBit, uint64_t _bitNum, char _endian[2])
 {
+	ps = new SignalNode;
+	strcpy_s(ps->SignalName, _signalName);
+	ps->phy_A = _phy_A;
+	ps->phy_B = _phy_A;
+	ps->maxValue = _maxValue;
+	ps->minValue = _minValue;
+	strcpy_s(ps->units, _units);
+	strcpy_s(ps->NodeName, _nodeName);
+	ps->startBit = _startBit;
+	ps->bitNum = _bitNum;
+	strcpy_s(ps->Endian, _endian);
+	ps->nextSignalNode = nullptr;
 	if (pm != nullptr && ps != nullptr)
 	{
-		PSignalNode p = pm->pSignalNode;
-		while (p->nextSignalNode != NULL)
-			p = p->nextSignalNode;
-		ps->nextSignalNode = p->nextSignalNode;
-		p->nextSignalNode = ps;
-	}
-	else
-		return;
-}
-
-/*****************************************************
-
-函数名：InsertMessageNode 信息节点插入函数
-功能：尾插法插入信息节点
-
-*****************************************************/
-
-void MessageLinkList::InsertMessageNode(PMessageNode pm)
-{
-	if (pm != nullptr)
-	{
-		PMessageNode head = mHead;
-		PMessageNode p = head;
-		if (head == NULL)
-			head->nextMessageNode = pm;
+		if (pm->pSignalNode == nullptr)
+			pm->pSignalNode = ps;
 		else
 		{
-			while (p->nextMessageNode != NULL)
-				p = p->nextMessageNode;
-			pm->nextMessageNode = p->nextMessageNode;     //尾插新节点
-			p->nextMessageNode = pm;
+			PSignalNode p = pm->pSignalNode;
+			while (p->nextSignalNode != NULL)
+				p = p->nextSignalNode;
+			ps->nextSignalNode = p->nextSignalNode;
+			p->nextSignalNode = ps;
 		}
-		mUpdate = pm;               //最新的节点
 	}
 	else
 		return;
