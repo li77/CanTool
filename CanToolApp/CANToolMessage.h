@@ -1,9 +1,6 @@
-#ifndef CANTOOLMessage_H
-#define CANTOOLMessage_H
+#pragma once
 #include <iostream>
-#include <string>
-#include <unordered_map>
-#include <vector>
+
 using namespace std;
 
 /*struct CANSignal
@@ -39,12 +36,12 @@ private:
 	int m_dlc;
 	string m_data_bin;
 
+
 	//字符串中16进制数转10进制int
-	int getInt(string);
+	//int getInt(string);
 	//16进制字符串转2进制
 	string HexToBin(const string);
 	char* signalAnalyze(int, int, string, string);
 	void signalSynthesis(int, int, string, char*);
 };
 
-#endif

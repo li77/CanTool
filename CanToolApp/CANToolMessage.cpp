@@ -4,15 +4,13 @@
 #include <string>
 #include <fstream>
 #include <streambuf>
-#include <vector>
 #include <regex>
-#include <unordered_map>
 #include <sstream>
 #include "CanTool_LinkList.h"
 
 using namespace std;
 
-extern MessageLinkList linkList;
+MessageLinkList linkList;
 PMessageNode pm;
 PSignalNode ps;
 
@@ -33,9 +31,12 @@ void CANToolMessage::analyze(string _message)
 	if (m_message[0] == 'T')
 	{
 		s_id = m_message.substr(1, 8);
-		m_id = getInt(s_id);
+		stringstream ss;
+		ss << s_id;
+		ss >> m_id;
 		s_dlc = m_message[9];
-		m_dlc = getInt(s_dlc);
+		ss << s_dlc;
+		ss >> m_dlc;
 
 		s_data = m_message.substr(10, m_dlc * 2);
 
@@ -56,20 +57,25 @@ void CANToolMessage::analyze(string _message)
 		}
 		}*/
 		//调用search(m_id)获取指针；
+		int data;
+
+		ss << m_data_bin;
+		ss >> data;
 		pm = linkList.Search(m_id);
 		//不存在id则调用insertMessage(id,dlc,data)存储Message节点；
 		if (pm == nullptr)
 		{
-
+			//linkList.CreatMessageNode();
+			linkList.InsertMessageNode(m_id, m_dlc, data);
 		}
 		//存在则调用updateMessage()存储data；
 		else
 		{
-
+			linkList.UpdateMessageNode(data, pm);
 		}
 		//得到signal起始位，长度和格式；
-		int start;
-		int length;
+		int start = pm->pSignalNode->startBit;
+		int length = pm->pSignalNode->bitNum;
 		string format;//0+：motorala格式 1+：intel格式
 					  //解析
 		char * value = signalAnalyze(start, length, format, m_data_bin);
@@ -78,10 +84,13 @@ void CANToolMessage::analyze(string _message)
 	}
 	else if (m_message[0] == 't')
 	{
+		stringstream ss;
 		s_id = m_message.substr(1, 3);
-		m_id = getInt(s_id);
+		ss << s_id;
+		ss >> m_id;
 		s_dlc = m_message[4];
-		m_dlc = getInt(s_dlc);
+		ss << s_dlc;
+		ss >> m_dlc;
 
 		s_data = m_message.substr(10, m_dlc * 2);
 
@@ -115,6 +124,8 @@ string CANToolMessage::synthesis(string _str)
 	int start;
 	int length;
 	string format;
+	string data;
+	return data;
 }
 
 void CANToolMessage::setMessage(string message)
@@ -166,64 +177,78 @@ void CANToolMessage::loadDB(string filename)
 				ss >> id;
 				ss << m[4];
 				ss >> dlc;
-				//调用insertMessage(id,dlc,null);
-				if (pm = nullptr)
-				{
-					pm = linkList.CreatMessageNode();
-				}
-				linkList.InitialMessageNode(pm, id, dlc, NAN);
-				linkList.InsertMessageNode(pm);
+				//调用insertMessage(id,dlc,null);				
+				linkList.InsertMessageNode(id, dlc, NAN);
 				ps = nullptr;
-				//cout << id << endl;
+				cout << id << endl;
 			}
 			else if (s.substr(0, 4).compare(" SG_") == 0)
 			{
 				regex reg("\\s+(\\w+)\\s+(\\w+)\\s+:\\s+(\\d+)\\|(\\d+)@([1|0][+|-])\\s+(\\S+)\\s+(\\S+)\\s+(.*)\\s+(.*)");
 				smatch m;
 				regex_match(s, m, reg);
-				string s_signalName = m[2];
-				char signalName[32];
-				strcpy(signalName, s_signalName.c_str());
-				char start;
 				stringstream ss;
+				char signalName[32];
+				ss << m[2];
+				ss >> signalName;
+				ss.str("");
+				ss.clear();
+				int start;
 				ss << m[3];
 				ss >> start;
-				char length;
+				ss.str("");
+				ss.clear();
+				int length;
 				ss << m[4];
 				ss >> length;
-				char format;
+				ss.str("");
+				ss.clear();
+				char format[4];
 				ss << m[5];
 				ss >> format;
+				ss.str("");
+				ss.clear();
 				string offset = m[6];
 				int	index = offset.find(",");
 				float A;
 				float B;
 				ss << offset.substr(1, index - 1);
 				ss >> A;
+				ss.str("");
+				ss.clear();
 				ss << offset.substr(index + 1, offset.size() - index - 2);
 				ss >> B;
+				ss.str("");
+				ss.clear();
 				string scope = m[7];
 				float maxValue;
 				float minValue;
 				index = scope.find("|");
 				ss << scope.substr(1, index - 1);
 				ss >> minValue;
-				ss << scope.substr(index + 1, offset.size() - index - 2);
+				ss.str("");
+				ss.clear();
+				ss << scope.substr(index + 1, scope.size() - index - 2);
 				ss >> maxValue;
+				ss.str("");
+				ss.clear();
 				char unit[32];
 				ss << m[8];
 				ss >> unit;
+				ss.str("");
+				ss.clear();
 				char nodeName[255];
 				ss << m[9];
 				ss >> nodeName;
+				ss.str("");
+				ss.clear();
 				//调用insertSignal();
-				if (ps = nullptr)
-				{
-					linkList.CreatSignalNode();
-				}
-				linkList.LinkMessage_Signal(pm, ps);
-				linkList.InitialSignalNode(ps, signalName, A, B, maxValue, minValue, unit, nodeName, start, length, format);
-				linkList.InsertSignalNode(pm, ps);
+				//if (ps = nullptr)
+				//{
+				//linkList.CreatSignalNode();
+				//}
+
+				linkList.InsertSignalNode(signalName, A, B, maxValue, minValue, unit, nodeName, start, length, format);
 				/*struct CANSignal signal;
 				signal.signalName = m[2];
 				signal.start = m[3];
@@ -234,7 +259,8 @@ void CANToolMessage::loadDB(string filename)
 				signal.unit = m[8];
 				signal.nodeName = m[9];
 				signals.push_back(signal);*/
-				//cout << signal_name << " " << start << " " << length << " " << format << " " << offset << " " << scope << " " << unit << " " << node_name << endl;
+				//cout << A << endl;
+				cout << signalName << " " << start << " " << length << " " << format << " " << A << " " << B << " " << minValue << " " << maxValue << " " << unit << " " << nodeName << endl;
 			}
 		}
 		//canmsg.insert(make_pair(id, signals));
@@ -247,13 +273,13 @@ void CANToolMessage::loadDB(string filename)
 	file.close();
 }
 
-int CANToolMessage::getInt(string str)
+/*int CANToolMessage::getInt(string str)
 {
-	const char *p = str.c_str();
-	char *c_str;
-	int num = (int)strtol(p, &c_str, 16);
-	return num;
-}
+const char *p = str.c_str();
+char *c_str;
+int num = (int)strtol(p, &c_str, 16);
+return num;
+}*/
 
 string CANToolMessage::HexToBin(const string strHex)
 {
