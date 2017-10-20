@@ -19,11 +19,11 @@ typedef struct SignalNode
 	char units[32];
 	char NodeName[255];
 	char startBit;
-	char endBit;
-	char Endian;//1是小端（intel），0是大端
+	char bitNum;
+	char Endian;     //1是小端（intel），0是大端
 	float value;
 	DATE date;
-	int  msec;//每秒的毫秒
+	int  msec;       //每秒的毫秒
 	SignalNode* nextSignalNode;
 }*PSignalNode;
 
