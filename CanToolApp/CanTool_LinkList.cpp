@@ -1,11 +1,15 @@
-#include <iostream>
 #include "stdafx.h"
 #include "CanTool_LinkList.h"
 using namespace std;
 
+char isHaveDB;
+MessageLinkList  mList;
+
+
 MessageLinkList::MessageLinkList()
 {
 	mHead = new MessageNode;
+	mHead->nextMessageNode = NULL;
 	mUpdate = NULL;
 	pm = NULL;
 	ps = NULL;
@@ -23,12 +27,12 @@ MessageLinkList::~MessageLinkList()
 
 *****************************************************/
 
-void MessageLinkList::InsertMessageNode(uint32 _id, uchar _dlc, uint64_t _data)
+void MessageLinkList::InsertMessageNode(uint32 _id, uchar _dlc, char _data[64])
 {
 	pm = new MessageNode;
 	pm->id = _id;
 	pm->DLC = _dlc;
-	pm->data = _data;
+	strcpy_s(pm->data, strlen(_data) + 1, _data);
 	pm->nextMessageNode = nullptr;
 	pm->pSignalNode = nullptr;
 	if (pm != nullptr)
@@ -59,16 +63,16 @@ void MessageLinkList::InsertMessageNode(uint32 _id, uchar _dlc, uint64_t _data)
 void MessageLinkList::InsertSignalNode(char _signalName[32], float _phy_A, float _phy_B, float _maxValue, float _minValue, char _units[32], char _nodeName[255], uint64_t _startBit, uint64_t _bitNum, char _endian[2])
 {
 	ps = new SignalNode;
-	strcpy_s(ps->SignalName, _signalName);
+	strcpy_s(ps->SignalName, strlen(_signalName) + 1, _signalName);
 	ps->phy_A = _phy_A;
 	ps->phy_B = _phy_A;
 	ps->maxValue = _maxValue;
 	ps->minValue = _minValue;
-	strcpy_s(ps->units, _units);
-	strcpy_s(ps->NodeName, _nodeName);
+	strcpy_s(ps->units, strlen(_units) + 1, _units);
+	strcpy_s(ps->NodeName, strlen(_nodeName) + 1, _nodeName);
 	ps->startBit = _startBit;
 	ps->bitNum = _bitNum;
-	strcpy_s(ps->Endian, _endian);
+	strcpy_s(ps->Endian, strlen(_endian) + 1, _endian);
 	ps->nextSignalNode = nullptr;
 	if (pm != nullptr && ps != nullptr)
 	{
@@ -134,13 +138,13 @@ PMessageNode MessageLinkList::Search(uint32 _id)
 
 *****************************************************/
 
-void MessageLinkList::UpdateMessageNode(uint64_t _data, PMessageNode pm)
+void MessageLinkList::UpdateMessageNode(char _data[64], PMessageNode pm)
 {
 	if (pm == nullptr)
 		return;
 	else
 	{
-		pm->data = _data;
+		strcpy_s(pm->data, strlen(_data) + 1, _data);
 		mUpdate = pm;                           //最新的节点
 	}
 }
