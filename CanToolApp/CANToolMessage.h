@@ -1,9 +1,6 @@
-#ifndef CANTOOLMessage_H
-#define CANTOOLMessage_H
+#pragma once
 #include <iostream>
-#include <string>
-#include <unordered_map>
-#include <vector>
+
 using namespace std;
 
 /*struct CANSignal
@@ -37,14 +34,14 @@ private:
 	string m_message;
 	int m_id;
 	int m_dlc;
+	char m_data[64];
 	string m_data_bin;
 
-	//字符串中16进制数转10进制int
-	int getInt(string);
-	//16进制字符串转2进制
-	string HexToBin(const string);
+	int getInt(string);//字符串中16进制数转10进制int	
+	string HexToBin(const string);//16进制字符串转2进制
 	char* signalAnalyze(int, int, string, string);
 	void signalSynthesis(int, int, string, char*);
+	void searchById(); //通过id在链表中查找，并存储数据
 };
 
-#endif
+extern CANToolMessage cantool;

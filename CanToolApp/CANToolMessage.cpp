@@ -1,20 +1,19 @@
 #include "CANToolMessage.h"
 #include <iostream>
-#include <stdlib.h>
+#include "stdafx.h"
 #include <string>
 #include <fstream>
 #include <streambuf>
-#include <vector>
 #include <regex>
-#include <unordered_map>
 #include <sstream>
 #include "CanTool_LinkList.h"
 
 using namespace std;
 
-extern MessageLinkList linkList;
+CANToolMessage cantool;
 PMessageNode pm;
 PSignalNode ps;
+
 
 CANToolMessage::CANToolMessage()
 {
@@ -26,20 +25,29 @@ CANToolMessage::~CANToolMessage()
 
 void CANToolMessage::analyze(string _message)
 {
-	string s_id;
-	string s_dlc;
-	string s_data;
+	stringstream ss;
 	m_message = _message;
 	if (m_message[0] == 'T')
 	{
-		s_id = m_message.substr(1, 8);
-		m_id = getInt(s_id);
-		s_dlc = m_message[9];
-		m_dlc = getInt(s_dlc);
+		m_id = getInt(m_message.substr(1, 8));
 
-		s_data = m_message.substr(10, m_dlc * 2);
+		cout << m_id << endl;
+		ss.str("");
+		ss.clear();
 
-		m_data_bin = HexToBin(s_data);
+		ss << m_message[9];
+		ss >> m_dlc;
+		ss.str("");
+		ss.clear();
+
+		m_data_bin = HexToBin(m_message.substr(10, m_dlc * 2));
+		ss << m_data_bin;
+		ss >> m_data;
+		ss.str("");
+		ss.clear();
+
+		searchById();
+
 		/*if (canmsg.find(m_id) != canmsg.end())
 		{
 		for (int i = 0; i <= canmsg[m_id].size(); i++)
@@ -52,40 +60,25 @@ void CANToolMessage::analyze(string _message)
 		ss << canmsg[m_id][i].length;
 		ss >> length;
 		string format = canmsg[m_id][i].format;//0+：motorala格式 1+：intel格式
-		//cout << signalAnalyze(start, length, format, m_data_bin) << endl;
 		}
 		}*/
-		//调用search(m_id)获取指针；
-		pm = linkList.Search(m_id);
-		//不存在id则调用insertMessage(id,dlc,data)存储Message节点；
-		if (pm == nullptr)
-		{
-
-		}
-		//存在则调用updateMessage()存储data；
-		else
-		{
-
-		}
-		//得到signal起始位，长度和格式；
-		int start;
-		int length;
-		string format;//0+：motorala格式 1+：intel格式
-					  //解析
-		char * value = signalAnalyze(start, length, format, m_data_bin);
-		//调用updateSignal()存储value；
-
 	}
 	else if (m_message[0] == 't')
 	{
-		s_id = m_message.substr(1, 3);
-		m_id = getInt(s_id);
-		s_dlc = m_message[4];
-		m_dlc = getInt(s_dlc);
+		m_id = getInt(m_message.substr(1, 3));
 
-		s_data = m_message.substr(10, m_dlc * 2);
+		ss << m_message[4];
+		ss >> m_dlc;
+		ss.str("");
+		ss.clear();
 
-		m_data_bin = HexToBin(s_data);
+		m_data_bin = HexToBin(m_message.substr(5, m_dlc * 2));
+		ss << m_data_bin;
+		ss >> m_data;
+		ss.str("");
+		ss.clear();
+
+		searchById();
 
 		/*if (canmsg.find(m_id) != canmsg.end())
 		{
@@ -99,7 +92,6 @@ void CANToolMessage::analyze(string _message)
 		ss << canmsg[m_id][i].length;
 		ss >> length;
 		string format = canmsg[m_id][i].format;//0+：motorala格式 1+：intel格式
-		//cout << signalAnalyze(start, length, format, m_data_bin) << endl;
 		}
 		}*/
 	}
@@ -115,6 +107,8 @@ string CANToolMessage::synthesis(string _str)
 	int start;
 	int length;
 	string format;
+	string data;
+	return data;
 }
 
 void CANToolMessage::setMessage(string message)
@@ -149,11 +143,10 @@ void CANToolMessage::loadDB(string filename)
 
 	if (file.is_open())
 	{
-		//cout << "file is open" << endl;
 		string s;
 		//vector<CANSignal> signals;
 		int id;
-		int dlc;
+		char dlc;
 		while (getline(file, s))
 		{
 			if (s.substr(0, 3).compare("BO_") == 0)
@@ -164,66 +157,84 @@ void CANToolMessage::loadDB(string filename)
 				stringstream ss;
 				ss << m[2];
 				ss >> id;
+				ss.str("");
+				ss.clear();
 				ss << m[4];
 				ss >> dlc;
-				//调用insertMessage(id,dlc,null);
-				if (pm = nullptr)
-				{
-					pm = linkList.CreatMessageNode();
-				}
-				linkList.InitialMessageNode(pm, id, dlc, NAN);
-				linkList.InsertMessageNode(pm);
-				ps = nullptr;
-				//cout << id << endl;
+				ss.str("");
+				ss.clear();
+				//调用insertMessage(id,dlc,null);				
+				mList.InsertMessageNode(id, dlc, "");
+				//ps = nullptr;
 			}
 			else if (s.substr(0, 4).compare(" SG_") == 0)
 			{
 				regex reg("\\s+(\\w+)\\s+(\\w+)\\s+:\\s+(\\d+)\\|(\\d+)@([1|0][+|-])\\s+(\\S+)\\s+(\\S+)\\s+(.*)\\s+(.*)");
 				smatch m;
 				regex_match(s, m, reg);
-				string s_signalName = m[2];
-				char signalName[32];
-				strcpy(signalName, s_signalName.c_str());
-				char start;
 				stringstream ss;
+				char signalName[32];
+				ss << m[2];
+				ss >> signalName;
+				ss.str("");
+				ss.clear();
+				int start;
 				ss << m[3];
 				ss >> start;
-				char length;
+				ss.str("");
+				ss.clear();
+				int length;
 				ss << m[4];
 				ss >> length;
-				char format;
+				ss.str("");
+				ss.clear();
+				char format[4];
 				ss << m[5];
 				ss >> format;
+				ss.str("");
+				ss.clear();
 				string offset = m[6];
 				int	index = offset.find(",");
 				float A;
 				float B;
 				ss << offset.substr(1, index - 1);
 				ss >> A;
+				ss.str("");
+				ss.clear();
 				ss << offset.substr(index + 1, offset.size() - index - 2);
 				ss >> B;
+				ss.str("");
+				ss.clear();
 				string scope = m[7];
 				float maxValue;
 				float minValue;
 				index = scope.find("|");
 				ss << scope.substr(1, index - 1);
 				ss >> minValue;
-				ss << scope.substr(index + 1, offset.size() - index - 2);
+				ss.str("");
+				ss.clear();
+				ss << scope.substr(index + 1, scope.size() - index - 2);
 				ss >> maxValue;
+				ss.str("");
+				ss.clear();
 				char unit[32];
 				ss << m[8];
 				ss >> unit;
+				ss.str("");
+				ss.clear();
 				char nodeName[255];
 				ss << m[9];
 				ss >> nodeName;
+				ss.str("");
+				ss.clear();
+
 				//调用insertSignal();
-				if (ps = nullptr)
-				{
-					linkList.CreatSignalNode();
-				}
-				linkList.LinkMessage_Signal(pm, ps);
-				linkList.InitialSignalNode(ps, signalName, A, B, maxValue, minValue, unit, nodeName, start, length, format);
-				linkList.InsertSignalNode(pm, ps);
+				//if (ps = nullptr)
+				//{
+				//mList.CreatSignalNode();
+				//}
+
+				mList.InsertSignalNode(signalName, A, B, maxValue, minValue, unit, nodeName, start, length, format);
 				/*struct CANSignal signal;
 				signal.signalName = m[2];
 				signal.start = m[3];
@@ -234,7 +245,7 @@ void CANToolMessage::loadDB(string filename)
 				signal.unit = m[8];
 				signal.nodeName = m[9];
 				signals.push_back(signal);*/
-				//cout << signal_name << " " << start << " " << length << " " << format << " " << offset << " " << scope << " " << unit << " " << node_name << endl;
+
 			}
 		}
 		//canmsg.insert(make_pair(id, signals));
@@ -259,7 +270,6 @@ string CANToolMessage::HexToBin(const string strHex)
 {
 	string strBin;
 	strBin.resize(strHex.size() * 4);
-	//cout << strBin.size() << endl;
 	for (int i = 0; i < strHex.size(); i++)
 	{
 		char c_hex = strHex[i];
@@ -320,7 +330,6 @@ char * CANToolMessage::signalAnalyze(int start, int length, string format, strin
 				byte = byte + 1;
 				bit = 7;
 			}
-			//cout << bit << " " << byte << endl;
 		}
 	}
 	//intel格式
@@ -339,7 +348,6 @@ char * CANToolMessage::signalAnalyze(int start, int length, string format, strin
 				byte = byte + 1;
 				bit = 0;
 			}
-			//cout << bit << " " << byte << endl;
 		}
 	}
 	else
@@ -371,7 +379,6 @@ void CANToolMessage::signalSynthesis(int start, int length, string format, char*
 				byte = byte + 1;
 				bit = 7;
 			}
-			//cout << bit << " " << byte << endl;
 		}
 	}
 	//intel格式
@@ -390,11 +397,52 @@ void CANToolMessage::signalSynthesis(int start, int length, string format, char*
 				byte = byte + 1;
 				bit = 0;
 			}
-			//cout << bit << " " << byte << endl;
 		}
 	}
 	else
 	{
+
+	}
+}
+
+void CANToolMessage::searchById()
+{
+	stringstream ss;
+	//调用search(m_id)获取指针；
+	pm = mList.Search(m_id);
+	//不存在id则调用insertMessage(id,dlc,data)存储Message节点；
+	if (pm == nullptr)
+	{
+		//linkList.CreatMessageNode();
+		mList.InsertMessageNode(m_id, m_dlc, m_data);
+
+	}
+	//存在则调用updateMessage()存储data；
+	else
+	{
+		mList.UpdateMessageNode(m_data, pm);
+		//得到signal起始位，长度和格式；
+		ps = pm->pSignalNode;
+		while (ps != nullptr)
+		{
+			int start = ps->startBit;
+			int length = ps->bitNum;
+			float A = ps->phy_A;
+			float B = ps->phy_B;
+			string format = ps->Endian;//0+：motorala格式 1+：intel格式
+									   //解析
+			char * value = signalAnalyze(start, length, format, m_data_bin);
+			float i_value;
+			float x;
+			ss << value;
+			ss >> x;
+			ss.str("");
+			ss.clear();
+			i_value = A*x + B;
+			//调用updateSignal()存储value；
+			mList.UpdateSignalNode(ps->SignalName, i_value, pm);
+			ps = ps->nextSignalNode;
+		}
 
 	}
 }

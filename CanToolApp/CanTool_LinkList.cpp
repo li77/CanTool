@@ -1,7 +1,10 @@
-#include <iostream>
 #include "stdafx.h"
 #include "CanTool_LinkList.h"
 using namespace std;
+
+char isHaveDB;
+MessageLinkList  mList;
+
 
 MessageLinkList::MessageLinkList()
 {
@@ -61,7 +64,7 @@ void MessageLinkList::InsertMessageNode(uint32 _id, uchar _dlc, char _data[64])
 void MessageLinkList::InsertSignalNode(char _signalName[32], float _phy_A, float _phy_B, float _maxValue, float _minValue, char _units[32], char _nodeName[255], uint64_t _startBit, uint64_t _bitNum, char _endian[2])
 {
 	ps = new SignalNode;
-	strcpy_s(ps->SignalName, strlen(_signalName)+1, _signalName);
+	strcpy_s(ps->SignalName, strlen(_signalName) + 1, _signalName);
 	ps->phy_A = _phy_A;
 	ps->phy_B = _phy_A;
 	ps->maxValue = _maxValue;

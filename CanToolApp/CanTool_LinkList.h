@@ -5,7 +5,7 @@
 typedef unsigned int uint32;
 typedef unsigned char uchar;
 
-//char isHaveDB;
+
 
 typedef struct SignalNode
 {
@@ -19,9 +19,8 @@ typedef struct SignalNode
 	char NodeName[255];
 	uint64_t startBit;
 	uint64_t bitNum;
-	char Endian[2];     //1是小端（intel），0是大端
+	char Endian[2];     //1+是小端（intel），0+是大端
 	float value;
-	
 	SignalNode* nextSignalNode;
 }*PSignalNode;
 
@@ -60,12 +59,16 @@ public:
 	void Traversal();                                                                    //遍历
 	PMessageNode Get_mHead();
 	PMessageNode Get_mUpdate();
-private:
+
 	PMessageNode mHead;
 	PMessageNode mUpdate;                                                                //指向最近一次更新的节点
+private:
 	PMessageNode pm;                                                                     //指向信息节点
 	PSignalNode ps;                                                                      //指向信号节点
 	void DeleteSignalNode(PMessageNode);                                                 //删除信号节点
 };
 
+
+extern char isHaveDB;
+extern MessageLinkList  mList;
 #endif
