@@ -21,20 +21,22 @@ typedef struct SignalNode
 	uint64_t bitNum;
 	char Endian[2];     //1是小端（intel），0是大端
 	float value;
-	//DATE date;
-	int  msec;       //每秒的毫秒
+	
 	SignalNode* nextSignalNode;
 }*PSignalNode;
 
 typedef struct MessageNode
 {
-	uint64_t data;
+	char data[64];
 	char CANmessage[32] = "BO_";
 	uint32 id;
 	char MessageName[32];
 	char Separater = ':';
 	uchar DLC;
 	char NodeName[32];
+	//DATE date;
+	int  msec;       //每秒的毫秒
+	int received;    //接收次数
 	MessageNode* nextMessageNode;
 	PSignalNode pSignalNode;
 }*PMessageNode;
@@ -46,12 +48,12 @@ public:
 	~MessageLinkList();
 	//PMessageNode CreatMessageNode();     //创建信息节点
 	//PSignalNode CreatSignalNode();       //创建信号节点
-	void InsertMessageNode(uint32, uchar, uint64_t);        //初始化信息节点
+	void InsertMessageNode(uint32, uchar, char _data[64]);        //初始化信息节点
 	void InsertSignalNode(char _signalName[32], float, float, float, float, char _units[32], char _nodeName[255], uint64_t, uint64_t, char _endian[2]); //初始化信号节点
-																																						//void LinkMessage_Signal(PMessageNode, PSignalNode);                                  //连接信息节点和信号节点
-																																						//void InsertSignalNode(PMessageNode, PSignalNode);                                    //插入信号节点
-																																						//void InsertMessageNode(PMessageNode);                                                //插入信息节点
-	void UpdateMessageNode(uint64_t, PMessageNode);                                      //更新信息
+	//void LinkMessage_Signal(PMessageNode, PSignalNode);                                  //连接信息节点和信号节点
+	//void InsertSignalNode(PMessageNode, PSignalNode);                                    //插入信号节点
+	//void InsertMessageNode(PMessageNode);                                                //插入信息节点
+	void UpdateMessageNode(char _data[64], PMessageNode);                                //更新信息
 	void UpdateSignalNode(char _signalName[32], float, PMessageNode);                    //更新信号
 	PMessageNode Search(uint32);                                                         //查找
 	void DeleteAll();                                                                    //删除
