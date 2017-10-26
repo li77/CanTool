@@ -39,6 +39,7 @@ CCanToolApp theApp;
 
 BOOL CCanToolApp::InitInstance()
 {
+	AfxOleInit();
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
 	//则需要 InitCommonControlsEx()。  否则，将无法创建窗口。
@@ -73,6 +74,12 @@ BOOL CCanToolApp::InitInstance()
 	CMainDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
+	if (dlg.mInstrumentDlg != NULL) {
+		delete dlg.mInstrumentDlg;
+	}
+		if (dlg.mCurveDlg != NULL) {
+			delete dlg.mCurveDlg;
+		}
 	if (nResponse == IDOK)
 	{
 		// TODO: 在此放置处理何时用

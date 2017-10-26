@@ -36,7 +36,37 @@
     <ClInclude Include="com_led.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="InstrumentShow.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CurveDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SetValueDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="istripchartx1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="iangulargaugex1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="isevensegmentintegerx1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="CanTool_LinkList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mscomm1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ComDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="iledmatrixx1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CANToolMessage.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,7 +83,40 @@
     <ClCompile Include="com_led.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="DbStuctShow.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InstrumentShow.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CurveDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SetValueDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="istripchartx1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="iangulargaugex1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="isevensegmentintegerx1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mscomm1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ComDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="CanTool_LinkList.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="iledmatrixx1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CANToolMessage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -69,6 +132,21 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\CanToolApp.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\active.PNG">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\positive.PNG">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\active.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\positive.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\bitmap1.bmp">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

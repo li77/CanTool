@@ -186,18 +186,39 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CanToolApp.h" />
+    <ClInclude Include="CANToolMessage.h" />
     <ClInclude Include="CanTool_LinkList.h" />
+    <ClInclude Include="ComDlg.h" />
     <ClInclude Include="com_led.h" />
+    <ClInclude Include="CurveDlg.h" />
+    <ClInclude Include="iangulargaugex1.h" />
+    <ClInclude Include="iledmatrixx1.h" />
+    <ClInclude Include="InstrumentShow.h" />
+    <ClInclude Include="isevensegmentintegerx1.h" />
+    <ClInclude Include="istripchartx1.h" />
     <ClInclude Include="MainDlg.h" />
+    <ClInclude Include="mscomm1.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SetValueDlg.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CanToolApp.cpp" />
+    <ClCompile Include="CANToolMessage.cpp" />
     <ClCompile Include="CanTool_LinkList.cpp" />
+    <ClCompile Include="ComDlg.cpp" />
     <ClCompile Include="com_led.cpp" />
+    <ClCompile Include="CurveDlg.cpp" />
+    <ClCompile Include="DbStuctShow.cpp" />
+    <ClCompile Include="iangulargaugex1.cpp" />
+    <ClCompile Include="iledmatrixx1.cpp" />
+    <ClCompile Include="InstrumentShow.cpp" />
+    <ClCompile Include="isevensegmentintegerx1.cpp" />
+    <ClCompile Include="istripchartx1.cpp" />
     <ClCompile Include="MainDlg.cpp" />
+    <ClCompile Include="mscomm1.cpp" />
+    <ClCompile Include="SetValueDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -212,14 +233,19 @@
     <None Include="res\CanToolApp.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\active.bmp" />
+    <Image Include="res\active.PNG" />
+    <Image Include="res\bitmap1.bmp" />
     <Image Include="res\CanToolApp.ico" />
+    <Image Include="res\positive.bmp" />
+    <Image Include="res\positive.PNG" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties _x007B_0A362353-2E5E-11D3-85BF-00105AC8B715_x007D_="CCom_led" RESOURCE_FILE="CanToolApp.rc" />
+      <UserProperties _x007B_0A362383-2E5E-11D3-85BF-00105AC8B715_x007D_="CIsevensegmentintegerx1" _x007B_C5412DD5-2E2F-11D3-85BF-00105AC8B715_x007D_="CIangulargaugex1" _x007B_648A5600-2C6E-101B-82B6-000000000014_x007D_="CMscomm1" _x007B_0A362353-2E5E-11D3-85BF-00105AC8B715_x007D_="CCom_led" _x007B_A8B345A5-74B5-11D3-85C2-00105AC8B715_x007D_="CIledmatrixx1" RESOURCE_FILE="CanToolApp.rc" _x007B_D1120C80-28C7-11D3-85BF-00105AC8B715_x007D_="CIstripchartx1" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
