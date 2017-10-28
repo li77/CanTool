@@ -31,6 +31,7 @@ public:
 	void setAddress(string);
 	string getAddress();
 	void loadDB(string);
+	void save();
 
 private:
 	string m_message;

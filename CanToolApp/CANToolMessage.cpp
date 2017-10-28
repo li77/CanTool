@@ -426,6 +426,26 @@ void CANToolMessage::loadDB(string filename)
 	
 }
 
+void CANToolMessage::save()
+{
+	//存储为csv文件
+	if (!m_address.empty())
+	{
+		ofstream outfile(m_address, ios::app);
+		//outfile << pm->CANmessage << " " << m_id << " " << pm->MessageName << ": " << m_dlc << " " << pm->NodeName << endl;
+		outfile << mList.mUpdate->id << "," << mList.mUpdate->MessageName << "," << mList.mUpdate->dataShow << "," << mList.mUpdate->date << ",";
+
+		//得到signal起始位，长度和格式；
+		ps = mList.mUpdate->pSignalNode;
+		while (ps != nullptr)
+		{
+			outfile << ps->SignalName << "," << ps->value << " " << ps->units << endl;
+			ps = ps->nextSignalNode;
+		}
+		outfile.close();
+	}
+}
+
 int CANToolMessage::getInt(string str)
 {
 	const char *p = str.c_str();
@@ -597,68 +617,31 @@ void CANToolMessage::searchById()
 		mList.UpdateMessageNode(m_data, m_dataShow, pm);
 		pm->received++;
 		
-		//存储为csv文件
-		if (!m_address.empty())
+		ps = pm->pSignalNode;
+		while (ps != nullptr)
 		{
-			ofstream outfile(m_address, ios::app);
-			//outfile << pm->CANmessage << " " << m_id << " " << pm->MessageName << ": " << m_dlc << " " << pm->NodeName << endl;
-			outfile << m_id << "," << pm->MessageName << "," << m_dataShow << "," << pm->date << ",";
+			int start = ps->startBit;
+			int length = ps->bitNum;
+			float A = ps->phy_A;
+			float B = ps->phy_B;
+			string format = ps->Endian;//0+：motorala格式 1+：intel格式
+										//解析
+			string value = signalAnalyze(start, length, m_dlc_i, format);
+			int x = BinToD(value);
+			float i_value;
+			/*float x;
+			ss << value;
+			ss >> x;
+			ss.str("");
+			ss.clear();*/
+			i_value = A*x + B;
+			cout << ps->SignalName << "  " << i_value << endl;
+			//调用updateSignal()存储value；
+			mList.UpdateSignalNode(i_value, ps);
+			//存储为csv文件
+			ps = ps->nextSignalNode;
+		}
 
-			//得到signal起始位，长度和格式；
-			ps = pm->pSignalNode;
-			while (ps != nullptr)
-			{
-				int start = ps->startBit;
-				int length = ps->bitNum;
-				float A = ps->phy_A;
-				float B = ps->phy_B;
-				string format = ps->Endian;//0+：motorala格式 1+：intel格式
-										   //解析
-				string value = signalAnalyze(start, length, m_dlc_i, format);
-				int x = BinToD(value);
-				float i_value;
-				/*float x;
-				ss << value;
-				ss >> x;
-				ss.str("");
-				ss.clear();*/
-				i_value = A*x + B;
-				cout << ps->SignalName << "  " << i_value << endl;
-				//调用updateSignal()存储value；
-				mList.UpdateSignalNode(i_value, ps);
-				//存储为csv文件
-				outfile << ps->SignalName << "," << i_value << " " << ps->units << endl;
-				ps = ps->nextSignalNode;
-			}
-			outfile.close();
-		}
-		else 
-		{
-			ps = pm->pSignalNode;
-			while (ps != nullptr)
-			{
-				int start = ps->startBit;
-				int length = ps->bitNum;
-				float A = ps->phy_A;
-				float B = ps->phy_B;
-				string format = ps->Endian;//0+：motorala格式 1+：intel格式
-										   //解析
-				string value = signalAnalyze(start, length, m_dlc_i, format);
-				int x = BinToD(value);
-				float i_value;
-				/*float x;
-				ss << value;
-				ss >> x;
-				ss.str("");
-				ss.clear();*/
-				i_value = A*x + B;
-				cout << ps->SignalName << "  " << i_value << endl;
-				//调用updateSignal()存储value；
-				mList.UpdateSignalNode(i_value, ps);
-				//存储为csv文件
-				ps = ps->nextSignalNode;
-			}
-		}
 	}
 }
 
