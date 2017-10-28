@@ -28,6 +28,8 @@ public:
 	int getId();
 	char getDlc();
 	string getData();
+	void setAddress(string);
+	string getAddress();
 	void loadDB(string);
 
 private:
@@ -39,7 +41,8 @@ private:
 	char m_dataShow[20];
 	char m_nodeName[32];
 	char m_messageName[32];
-
+	string m_address;
+		
 	int getInt(string);//字符串中16进制数转10进制int	
 	void HexToBin(string);//16进制字符串转2进制
 	string signalAnalyze(int, int, int, string);
@@ -49,4 +52,5 @@ private:
 	string IToHex(int, int);
 	int BinToD(string);
 };
-extern CANToolMessage dataManage;
+
+extern CANToolMessage cantool;
