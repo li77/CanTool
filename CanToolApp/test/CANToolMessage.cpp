@@ -433,13 +433,13 @@ void CANToolMessage::save()
 	{
 		ofstream outfile(m_address, ios::app);
 		//outfile << pm->CANmessage << " " << m_id << " " << pm->MessageName << ": " << m_dlc << " " << pm->NodeName << endl;
-		outfile << mList.mUpdate->id << "," << mList.mUpdate->MessageName << "," << mList.mUpdate->dataShow << "," << mList.mUpdate->date << ",";
+		outfile << mList.mUpdate->id << "," << mList.mUpdate->MessageName << "," << mList.mUpdate->dataShow << "," << mList.mUpdate->date <<endl;
 
 		//得到signal起始位，长度和格式；
 		ps = mList.mUpdate->pSignalNode;
 		while (ps != nullptr)
 		{
-			outfile << ps->SignalName << "," << ps->value << " " << ps->units << endl;
+			outfile << ",,,," << ps->SignalName << "," << ps->value << " " << ps->units << endl;
 			ps = ps->nextSignalNode;
 		}
 		outfile.close();
