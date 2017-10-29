@@ -1,0 +1,12 @@
+﻿  CANToolMessage.cpp
+c:\users\你们的爸爸\source\repos\project1\project1\cantoolmessage.cpp(31): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+c:\users\你们的爸爸\source\repos\project1\project1\cantoolmessage.cpp(32): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+c:\users\你们的爸爸\source\repos\project1\project1\cantoolmessage.cpp(115): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+c:\users\你们的爸爸\source\repos\project1\project1\cantoolmessage.cpp(116): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+c:\users\你们的爸爸\source\repos\project1\project1\cantoolmessage.cpp(220): warning C4244: “=”: 从“uint64_t”转换到“int”，可能丢失数据
+c:\users\你们的爸爸\source\repos\project1\project1\cantoolmessage.cpp(221): warning C4244: “=”: 从“uint64_t”转换到“int”，可能丢失数据
+c:\users\你们的爸爸\source\repos\project1\project1\cantoolmessage.cpp(241): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+c:\users\你们的爸爸\source\repos\project1\project1\cantoolmessage.cpp(439): warning C4018: “<”: 有符号/无符号不匹配
+c:\users\你们的爸爸\source\repos\project1\project1\cantoolmessage.cpp(608): warning C4244: “初始化”: 从“uint64_t”转换到“int”，可能丢失数据
+c:\users\你们的爸爸\source\repos\project1\project1\cantoolmessage.cpp(609): warning C4244: “初始化”: 从“uint64_t”转换到“int”，可能丢失数据
+  Project1.vcxproj -> C:\Users\你们的爸爸\source\repos\Project1\Debug\Project1.exe
